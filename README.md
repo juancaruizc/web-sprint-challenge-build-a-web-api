@@ -145,18 +145,18 @@ Be prepared to demonstrate your understanding of this week's concepts by answeri
 
 - With Node and express you can use JavaScript to create servers and APIs which before could not be done
 
-1. Understand and explain the use of Middleware.
+2. Understand and explain the use of Middleware.
 
 - Middleware is simply functions that extend what Node can do, it helps you build more scalable code, add security, etc. The possibilities are endless.
 
-1. The basic principles of the REST architectural style.
+3. The basic principles of the REST architectural style.
 
 - It improves network performance because its cacheable. It has a client-server architecture.
 
-1. Understand and explain the use of Express Routers.
+4. Understand and explain the use of Express Routers.
 
 - Express routers also known as server side routing helps us keep our code DRY and use only the endpoint we want for the HTTP request rather than the whole base URL
 
-1. Describe tooling used to manually test the correctness of an API.
+5. Describe tooling used to manually test the correctness of an API.
 
 - There are several tools to manually test an API such as HTTPie and Postman
