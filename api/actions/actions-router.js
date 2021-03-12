@@ -5,61 +5,58 @@ const router = express.Router();
 
 const Action = require('./actions-model');
 
-router.get('/', (req, res) => {
-  Action.get()
-    .then((action) => {
-      res.status(200).json(action);
-    })
-    .catch((err) => {
-      res
-        .status(500)
-        .json({ message: `Error fetching the actions ${err.message}` });
-    });
-});
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
+const {
+  validateActionId,
+  validateAction,
+} = require('../middleware/middleware');
 
-  Action.get(id)
-    .then((action) => {
-      res.status(200).json(action);
-    })
-    .catch((err) => {
-      res
-        .status(500)
-        .json({ message: `Error getting the action ${err.message}` });
-    });
+// GET all actions
+router.get('/', (req, res, next) => {
+  Action.get()
+    .then((action) => res.status(200).json(action))
+    .catch(next);
 });
-router.post('/', (req, res) => {
+
+// GET individual action
+router.get('/:id', validateActionId, (req, res, next) => {
+  const { id } = req.params;
+  Action.get(id)
+    .then((action) => res.status(200).json(action))
+    .catch(next);
+});
+
+// POST an action
+router.post('/', validateAction, (req, res, next) => {
   const action = req.body;
 
   Action.insert(action)
-    .then((action) => {
-      res.status(201).json(action);
-    })
-    .catch((err) => {
-      res.status(500).json({ message: `Error adding action ${err.message}` });
-    });
+    .then((action) => res.status(201).json(action))
+    .catch(next);
 });
-router.put('/:id', (req, res) => {
+
+// PUT (update) an action
+router.put('/:id', validateAction, (req, res, next) => {
   const { id } = req.params;
   const changes = req.body;
   Action.update(id, changes)
-    .then((updatedAction) => {
-      res.status(200).json(updatedAction);
-    })
-    .catch((err) => {
-      res.status(500).json({ message: `Error updating action ${err.message}` });
-    });
+    .then((updatedAction) => res.status(200).json(updatedAction))
+    .catch(next);
 });
-router.delete('/:id', (req, res) => {
+
+// DELETE an action
+router.delete('/:id', (req, res, next) => {
   const { id } = req.params;
   Action.remove(id)
-    .then((deletedAction) => {
-      res.status(200).json(deletedAction);
-    })
-    .catch((err) => {
-      res.status(500).json({ message: `Error deleting action ${err.message}` });
-    });
+    .then((deletedAction) => res.status(200).json(deletedAction))
+    .catch(next);
+});
+
+router.use((err, req, res, next) => {
+  res.status(500).json({
+    message: err.message,
+    stack: err.stack,
+    custom: 'something went terrible in the actions router',
+  });
 });
 
 module.exports = router;
